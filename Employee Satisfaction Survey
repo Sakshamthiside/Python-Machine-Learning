@@ -1,0 +1,167 @@
+Project: Employee Satisfaction Survey
+Source Code:
+#Reading and writing the data
+library(readxl)
+data = read_xlsx("1662617767_data.xlsx")
+View(data)
+
+#Analyze the data
+class(data)
+head(data)
+tail(data)
+dim(data)
+str(data)
+summary(data)
+
+#Measures of Central Tendency Pre and Post Variable
+mean(data$Pre)
+mean(data$Post)
+median(data$Pre)
+median(data$Post)
+mode(data$Pre)
+mode(data$Post)
+quantile(data$Pre)
+quantile(data$Post)
+
+#Measures of Variation
+range(data$Pre)
+range(data$Post)
+var(data$Pre)
+var(data$Post)
+sd(data$Pre)
+sd(data$post)
+library(statip)
+cv(data$Pre)
+cv(data$Post)
+mad(data$Pre)
+mad(data$Post)
+library(stats)
+IQR(data$Pre)
+IQR(data$Post)
+
+#Measure the skewness of the Pre and Post Variable
+library(moments)
+skewness(data$Pre)
+agostino.test(data$Pre)
+skewness(data$Post)
+agostino.test(data$Post)
+
+#Measure the shape
+kurtosis(data$Pre)
+anscombe.test(data$Pre)
+kurtosis(data$Post)
+anscombe.test(data$Post)
+
+#Visualize the Pre and Post Variable
+plot(density(data$Pre), col = "blue", lwd = 4, main = "Graph", xlim = c(2,7))
+lines(density(data$Post),col = "red", lwd = 4)
+
+#Measure Frequency
+cold_drink_frequency = table(data$`Cold-Drink`)
+prop.table(table(data$`Cold-Drink`))
+
+#Create a pie chart for cold-drink preferences
+library(stats)
+pie(cold_drink_frequency, main = "Cold-Drink Preferences")
+
+#Create a Bar-Chart Frequency
+barplot(cold_drink_frequency, width = 1, main = "Cold-Drink Preferences")
+
+#Create a density graph
+plot(density(cold_drink_frequency), main = "Cold-Drink", lwd = 3, col = "red")
+library(moments)
+skewness(cold_drink_frequency)
+kurtosis(cold_drink_frequency)
+
+#Change the data type
+data$Status = as.factor(data$Status)
+data$Rating = as.factor(data$Rating)
+data$Outlook = as.factor(data$Outlook)
+class(data$Status)
+class(data$Rating)
+class(data$Outlook)
+
+summary(data$Status)
+summary(data$Rating)
+summary(data$Outlook)
+
+#Difference between average rating of Member and Observer Status for Pre and Post
+mean(data$Pre[data$Status == "Member"]) - mean(data$Post[data$Status == "Observer"])
+
+#Average of Pre and Post for "Stable" Outlook
+mean(data$Pre[data$Outlook == "Stable"])
+mean(data$Post[data$Outlook == "Stable"])
+
+#Construct a confidence interval of 2.5%, 5% and 1% level of significance for Salary variable
+Salary_Confidence_Interval = t.test(data$Salary, conf.level = 0.025)
+Salary_Confidence_Interval
+Salary_Confidence_Interval = t.test(data$Salary, conf.level = 0.05)
+Salary_Confidence_Interval
+Salary_Confidence_Interval = t.test(data$Salary, conf.level = 0.01)
+Salary_Confidence_Interval
+
+#Confidence Intervals of 99, 95 and 90% level of significance for Pre and Post
+Pre_Confidence_Interval = t.test(data$Pre, conf.level = 0.99)
+Pre_Confidence_Interval
+Pre_Confidence_Interval = t.test(data$Salary, conf.level = 0.95)
+Pre_Confidence_Interval
+Pre_Confidence_Interval = t.test(data$Salary, conf.level = 0.90)
+Pre_Confidence_Interval
+
+Post_Confidence_Interval = t.test(data$Salary, conf.level = 0.99)
+Post_Confidence_Interval
+Post_Confidence_Interval = t.test(data$Salary, conf.level = 0.95)
+Post_Confidence_Interval
+Post_Confidence_Interval = t.test(data$Salary, conf.level = 0.90)
+Post_Confidence_Interval
+
+#Take out sample of 50 without replacement
+Pre = sample(data$Pre, 50, replace = F)
+Pre
+Post = sample(data$Post, 50, replace = F)
+Post
+
+#Check if mean of Pre and Post Variable is more than of the Population
+Population_Pre_Mean = mean(data$Pre)
+t.test(Pre, mu = Population_Pre_Mean)
+
+Population_Post_Mean = mean(data$Post)
+t.test(Post, mu = Population_Post_Mean)
+
+#Compute Z value for Pre and Post
+z_Pre = (Pre - mean(Pre))/sd(Pre)
+z_Pre
+
+z_Post = (Post - mean(Post) / sd(Post))
+z_Post
+
+#Using P-value method
+t.test(Pre, mu = Population_Pre_Mean, conf.level = 0.90)
+t.test(Post, mu = Population_Post_Mean, conf.level = 0.90)
+
+#Using critical value approach
+t.test(Pre, mu = Population_Pre_Mean, conf.level = 0.01)
+t = -0.37437
+df = 49
+p_value = 0.7097
+sd(Pre)
+
+z = qnorm(p_value, mean = 3.977366, sd = 0.5614436, lower.tail = T, log.p = F)
+z
+ifelse (t>z, "Alternative is accepted!", "Failed to reject null hyothesis!")
+
+#Compute T-Statistics value for Pre and Post
+t_statistic = (mean(Pre) - Population_Pre_Mean) / (sd(Pre) / sqrt(length(Pre)))
+t_statistic
+t_statistic = (mean(Post) - Population_Post_Mean) / (sd(Post) / sqrt(length(Post)))
+t_statistic
+
+#Compute p value for Pre and Post
+t.test(Pre, conf.level = 0.1)
+t.test(Post, conf.level = 0.1)
+
+#Compute T value using critical value approach
+alpha = 0.1
+df = length(Pre) - 1
+critical_t_value = qt(1 - (0.1/2), df)
+critical_t_value
