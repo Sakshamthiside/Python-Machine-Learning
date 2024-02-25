@@ -1,0 +1,38 @@
+#Import needed library
+import pandas as pd
+
+#Read the data
+Diabetes = pd.read_csv('https://github.com/YBIFoundation/Dataset/raw/main/Diabetes.csv')
+
+#Explore the data
+Diabetes.info()
+
+Diabetes.describe()
+
+Diabetes.columns
+
+#Defining problem
+Y = Diabetes['diabetes']
+X = Diabetes[['pregnancies', 'glucose', 'diastolic', 'triceps', 'insulin', 'bmi',
+       'dpf', 'age']]
+
+#Split the data for training and the test
+from sklearn.model_selection import train_test_split
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, random_state = 2529)
+X_train.shape, X_test.shape, Y_train.shape, Y_test.shape
+
+#Model Selection
+from sklearn.linear_model import LogisticRegression
+model = LogisticRegression()
+
+#Train the model
+model.fit(X_train, Y_train)
+
+#Predict
+Y_predicted = model.predict(X_test)
+
+#Accuracy
+from sklearn.metrics import accuracy_score
+accuracy_score(Y_test, Y_predicted)
+
+#***Hurray🥳! My model is 77% accurate.***
