@@ -1,0 +1,38 @@
+#Import library
+import pandas as pd
+
+#read data
+Admission = pd.read_csv('https://github.com/YBIFoundation/Dataset/raw/main/Admission%20Chance.csv')
+
+#explore data
+Admission.head()
+
+Admission.info()
+
+Admission.describe()
+
+Admission.columns
+
+#defining the problem
+Y = Admission['Chance of Admit ']
+X = Admission[['Serial No', 'GRE Score', 'TOEFL Score', 'University Rating', ' SOP',
+       'LOR ', 'CGPA', 'Research']]
+
+#train_test_split
+from sklearn.model_selection import train_test_split
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, random_state = 2529)
+
+#Model selection
+from sklearn.ensemble import RandomForestRegressor
+model = RandomForestRegressor()
+
+#train
+model.fit(X_train, Y_train)
+
+#Predict
+Y_predicted = model.predict(X_test)
+
+#accuracy
+from sklearn.metrics import mean_absolute_percentage_error
+mean_absolute_percentage_error(Y_test, Y_predicted)
+
