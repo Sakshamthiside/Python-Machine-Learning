@@ -1,0 +1,38 @@
+#import library
+import pandas as pd
+
+#read data
+Credit = pd.read_csv('https://github.com/YBIFoundation/Dataset/raw/main/Credit%20Default.csv')
+
+#explore the data
+Credit.head()
+
+Credit.info()
+
+#define the problem
+Y = Credit['Default']
+X = Credit.drop(['Default'], axis = 1)
+Y.shape
+
+X.shape
+
+#split the data for training and test
+from sklearn.model_selection import train_test_split
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, random_state = 2529)
+X_train.shape, X_test.shape, Y_train.shape, Y_test.shape
+
+#model selection
+from sklearn.linear_model import LogisticRegression
+model = LogisticRegression()
+
+#train the model
+model.fit(X_train, Y_train)
+
+#predict
+Y_predicted = model.predict(X_test)
+
+#accuracy
+from sklearn.metrics import accuracy_score
+accuracy_score(Y_test, Y_predicted)
+
+#The model is 90% accurate.
