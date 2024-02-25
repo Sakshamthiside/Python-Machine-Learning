@@ -1,0 +1,48 @@
+#import library
+import pandas as pd
+
+#read data
+Customer = pd.read_csv('https://github.com/YBIFoundation/Dataset/raw/main/Customer%20Purchase.csv')
+
+#explore data
+Customer.head()
+
+Customer.info()
+
+Customer['Gender'].value_counts()
+
+Customer.describe()
+
+from pickle import TRUE
+#define the problem
+Y = Customer['Purchased']
+X = Customer.drop(['Purchased', 'Customer ID'], axis=1)
+
+X.replace({'Gender':{'Male':0, 'Female':1}},inplace=True)
+X.replace({'Education':{'School':0, 'UG':1, 'PG':2}}, inplace = True)
+X.replace({'Review':{'Poor':0, 'Average':1, 'Good':1}}, inplace = True)
+
+X.shape
+
+Y.shape
+
+#train test split
+from sklearn.model_selection import train_test_split
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, random_state = 2529)
+X_train.shape, X_test.shape, Y_train.shape, Y_test.shape
+
+#model selection
+from sklearn.ensemble import RandomForestClassifier
+model = RandomForestClassifier()
+
+#train the model
+model.fit(X_train, Y_train)
+
+#predict
+Y_predicted = model.predict(X_test)
+
+#accuracy
+from sklearn.metrics import accuracy_score
+accuracy_score(Y_test, Y_predicted)
+
+#The model is 61% accurate.
