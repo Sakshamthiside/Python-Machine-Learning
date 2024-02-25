@@ -1,0 +1,48 @@
+#import library
+import pandas as pd
+
+#read data
+Cancer = pd.read_csv('https://github.com/YBIFoundation/Dataset/raw/main/Cancer.csv')
+
+Cancer.head()
+
+Cancer.info()
+
+Cancer.describe()
+
+Cancer.columns
+
+Cancer = Cancer.drop('Unnamed: 32', axis = 1)
+
+#Defining the problem
+Y = Cancer['diagnosis']
+X = Cancer[['id', 'radius_mean', 'texture_mean', 'perimeter_mean',
+       'area_mean', 'smoothness_mean', 'compactness_mean', 'concavity_mean',
+       'concave points_mean', 'symmetry_mean', 'fractal_dimension_mean',
+       'radius_se', 'texture_se', 'perimeter_se', 'area_se', 'smoothness_se',
+       'compactness_se', 'concavity_se', 'concave points_se', 'symmetry_se',
+       'fractal_dimension_se', 'radius_worst', 'texture_worst',
+       'perimeter_worst', 'area_worst', 'smoothness_worst',
+       'compactness_worst', 'concavity_worst', 'concave points_worst',
+       'symmetry_worst', 'fractal_dimension_worst']]
+
+#split the data for training and the test
+from sklearn.model_selection import train_test_split
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, random_state = 2529)
+X_train.shape, X_test.shape, Y_train.shape, Y_test.shape
+
+#model selection
+from sklearn.tree import DecisionTreeClassifier
+model = DecisionTreeClassifier()
+
+#train the model
+model.fit(X_train, Y_train)
+
+#predict
+Y_predicted = model.predict(X_test)
+
+#accuracy
+from sklearn.metrics import accuracy_score
+accuracy_score(Y_test, Y_predicted)
+
+#This model is 94% accurate with DecisionTreeClassifier Model.
