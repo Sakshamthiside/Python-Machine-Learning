@@ -12,6 +12,22 @@ Heart.info()
 
 Heart.describe()
 
+1+Heart["cycling"].corr(Heart["heart_diseases"])
+
+import matplotlib.pyplot as plt
+
+plt.scatter(Heart['cycling'], Heart['heart_diseases'])
+plt.title('Scatter Plot: Cycling vs Heart Diseases')
+plt.xlabel('Cycling')
+plt.ylabel('Heart Diseases')
+plt.show()
+
+plt.scatter(Heart['smoking'], Heart['heart_diseases'])
+plt.title('Scatter Plot: Smoking vs Heart Diseases')
+plt.xlabel('Smoking')
+plt.ylabel('Heart Diseases')
+plt.show()
+
 #Assigning the values to variables
 
 Y = Heart['heart_diseases']
