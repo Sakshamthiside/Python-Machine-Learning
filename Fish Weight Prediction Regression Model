@@ -1,0 +1,39 @@
+#import library
+import pandas as pd
+
+#read data
+Fish = pd.read_csv('https://github.com/YBIFoundation/Dataset/raw/main/Fish.csv')
+
+#explore data
+Fish.columns
+
+Fish.info()
+
+#defining the problem
+Y = Fish['Weight']
+X = Fish[['Category','Height', 'Width', 'Length1',
+       'Length2', 'Length3']]
+X.shape
+
+Y.shape
+
+#split the data for training and test sample
+from sklearn.model_selection import train_test_split
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, random_state = 2529)
+X_train.shape, X_test.shape, Y_train.shape, Y_test.shape
+
+#model selection
+from sklearn.ensemble import RandomForestRegressor
+model = RandomForestRegressor()
+
+#train model
+model.fit(X_train, Y_train)
+
+#predict
+Y_predicted = model.predict(X_test)
+
+#accuracy
+from sklearn.metrics import mean_absolute_percentage_error, mean_squared_error, mean_absolute_error
+mean_absolute_percentage_error(Y_test, Y_predicted)
+
+#The model is 88% accurate.
