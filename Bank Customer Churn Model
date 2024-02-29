@@ -1,0 +1,57 @@
+Objective: To predict customer churn in a Bank.
+
+Data Source: YBI Foundation Github Dataset.
+
+Import library
+
+import pandas as pd
+
+Import data
+
+Customer = pd.read_csv('https://github.com/YBI-Foundation/Dataset/raw/main/Bank%20Churn%20Modelling.csv')
+
+Describe data
+
+Customer.head()
+
+Customer.info()
+
+Customer.columns
+
+Customer = Customer.replace({'Geography':{'France': 0, 'Germany': 1, 'Spain': 1}})
+
+Customer = Customer.replace({'Gender':{'Female': 0, 'Male': 1}})
+
+Customer.head()
+
+Define target variable (Y) and feature variables (X)
+
+Y = Customer['Churn']
+X = Customer.drop(['CustomerId', 'Surname', 'Churn'], axis = 1)
+
+Train Test Split
+
+from sklearn.model_selection import train_test_split
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, random_state = 2529)
+X_train.shape, X_test.shape, Y_train.shape, Y_test.shape
+
+Modelling
+
+from sklearn.linear_model import LogisticRegression
+
+Model Evaluation
+
+model = LogisticRegression()
+
+model.fit(X_train, Y_train)
+
+Prediction
+
+Y_predicted = model.predict(X_test)
+
+from sklearn.metrics import accuracy_score, confusion_matrix
+accuracy_score(Y_test, Y_predicted)
+
+confusion_matrix(Y_test, Y_predicted)
+
+#The Model is 80% accurate.
