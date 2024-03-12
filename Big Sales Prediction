@@ -1,0 +1,112 @@
+import pandas as pd
+
+sales = pd.read_csv('https://github.com/YBIFoundation/Dataset/raw/main/Big%20Sales%20Data.csv')
+
+sales.head()
+
+sales['Item_Weight'] = sales['Item_Weight'].fillna(0)
+
+sales['Item_Fat_Content'] = sales['Item_Fat_Content'].replace('Low Fat', 'LF', regex = True)
+
+sales['Item_Fat_Content'] = sales['Item_Fat_Content'].replace('reg', 'Regular', regex = True)
+
+sales['Item_Fat_Content'] = sales['Item_Fat_Content'].replace('low fat', 'LF', regex = True)
+
+sales['Item_Fat_Content'] = sales['Item_Fat_Content'].replace({'LF':0}, regex = True)
+sales['Item_Fat_Content'] = sales['Item_Fat_Content'].replace({'Regular':1}, regex = True)
+
+sales['Item_Type'] = sales['Item_Type'].replace('Breakfast', 'Snack Foods', regex = True)
+
+sales['Item_Type'] = sales['Item_Type'].replace('Starchy Foods', 'Others', regex = True)
+sales['Item_Type'] = sales['Item_Type'].replace('Meat', 'Others', regex = True)
+sales['Item_Type'] = sales['Item_Type'].replace('Breads', 'Others', regex = True)
+sales['Item_Type'] = sales['Item_Type'].replace('Seafood', 'Others', regex = True)
+
+sales['Item_Type'] = sales['Item_Type'].replace('Soft Drinks', 'Drinks', regex = True)
+sales['Item_Type'] = sales['Item_Type'].replace('Hard Drinks', 'Drinks', regex = True)
+
+sales['Item_Type'] = sales['Item_Type'].replace('Canned', 'Drinks', regex = True)
+
+sales['Item_Type'] = sales['Item_Type'].replace({'Snack Foods':'Foods', 'Fruits and Vegetables':'Foods', 'Frozen Foods':'Foods', 'Dairy':'Drinks', 'Baking Goods':'Foods', 'Health and Hygiene': 'Household'}, regex = True)
+
+sales['Item_Outlet_Sales'] = sales['Item_Outlet_Sales'].round()
+
+sales['Item_Type'] = sales['Item_Type'].replace({'Drinks':'Household', 'Others':'Household'}, regex = True)
+
+sales['Outlet_Size'] = sales['Outlet_Size'].replace({'High':0, 'Small':0, 'Medium':1}, regex = True)
+
+sales['Outlet_Type'] = sales['Outlet_Type'].replace({'Supermarket Type1':0, 'Grocery Store':1, 'Supermarket Type2':1, 'Supermarket Type3':1}, regex = True)
+
+sales['Outlet_Location_Type'] = sales['Outlet_Location_Type'].replace({'Tier 1':0, 'Tier 2':1, 'Tier 3':2}, regex = True)
+
+sales['Item_Type'] = sales['Item_Type'].replace({'Household':0, 'Foods':1}, regex = True)
+
+sales['Item_Type'].value_counts()
+
+sales['Outlet_Location_Type'].value_counts()
+
+sales['Outlet_Type'].value_counts()
+
+sales['Outlet_Size'].value_counts()
+
+sales['Item_Identifier'].value_counts()
+
+sales['Item_Weight'].value_counts()
+
+sales['Item_Fat_Content'].value_counts()
+
+sales['Item_Visibility'].value_counts()
+
+sales.info()
+
+sales['Item_Outlet_Sales'].corr(sales['Item_Weight'])
+
+import matplotlib.pyplot as plt
+
+x = sales['Item_Weight']
+y = sales['Item_Outlet_Sales']
+plt.scatter(x,y)
+plt.title('Scatter Plot of Weight and Sales')
+plt.show()
+
+sales['Item_Outlet_Sales'].corr(sales['Item_Fat_Content'])
+
+x = sales['Item_Fat_Content']
+y = sales['Item_Outlet_Sales']
+plt.scatter(x,y)
+plt.title('Scatter Plot of Fat Content and Sales')
+plt.show()
+
+sales['Item_Outlet_Sales'].corr(sales['Item_MRP'])
+
+x = sales['Item_MRP']
+y = sales['Item_Outlet_Sales']
+plt.scatter(x,y)
+plt.title('Scatter Plot of Fat Content and Sales')
+plt.show()
+
+sales.columns
+
+#Identify the variables
+Y = sales['Item_Outlet_Sales']
+X = sales[['Item_Weight', 'Item_Fat_Content', 'Item_Visibility', 'Item_Type', 'Item_MRP','Outlet_Size', 'Outlet_Location_Type', 'Outlet_Type']]
+
+#split the data for train and test
+from sklearn.model_selection import train_test_split
+X_train, X_test, Y_train, Y_test = train_test_split(X,Y, random_state = 2529)
+X_train.shape, X_test.shape, Y_train.shape, Y_test.shape
+
+#Model Selection
+from sklearn.ensemble import RandomForestRegressor
+model = RandomForestRegressor()
+
+#train the model
+model.fit(X_train, Y_train)
+
+#predict
+Y_predicted = model.predict(X_test)
+
+from sklearn.metrics import mean_absolute_percentage_error
+mean_absolute_percentage_error(Y_predicted, Y_test)
+
+# The model is 43% accurate.
