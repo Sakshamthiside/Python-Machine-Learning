@@ -1,5 +1,5 @@
 - 👋 Hi, I’m @Sakshamthiside
-- 👀 I’m interested in Business Analytics
+- 👀 I’m interested in Analytics
 - 🌱 I’m currently learning Business Analytics for Strategic Decision Making
 - 📫 How to reach me www.linkedin.com/in/saksham-vaishnav
 - 😄 Pronouns: He
